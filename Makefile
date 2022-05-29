@@ -1,5 +1,3 @@
-.PHONY: all clean
-
 datapack_files := $(shell find src/)
 
 datapack_name := $(shell jq -r '.pack.description[0]?.text // .pack.description' src/pack.mcmeta)
