@@ -1,7 +1,8 @@
 # Minecraft Datapack Template
 
-Use this as a starting point for your own data pack. The template provides
-starting pack structure, and scripts to package and install your datapack.
+Use this as a starting point for your own datapack for Minecraft Java Edition.
+The template provides starting pack structure, and scripts to package and
+install your datapack.
 
 ## Prerequisites
 
