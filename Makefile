@@ -28,6 +28,10 @@ all: $(package_filename)
 install: $(package_filename) $(datapacks_directory)
 	cp $(package_filename) $(datapacks_directory)
 
+.PHONY: uninstall
+uninstall:
+	rm $(datapacks_directory)/$(package_filename)
+
 .PHONY: clean
 clean:
 	rm $(package_filename)
