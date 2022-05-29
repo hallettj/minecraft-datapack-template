@@ -1,7 +1,7 @@
 datapack_files := $(shell find src/)
 
 datapack_name := $(shell jq -r '.pack.description[0]?.text // .pack.description' src/pack.mcmeta)
-package_filename := $(shell echo '$(datapack_name).zip' | sed 's/[A-Z]/\L&/g; s/\s\+/-/g')
+package := $(shell echo '$(datapack_name).zip' | sed 's/[A-Z]/\L&/g; s/\s\+/-/g')
 
 # Check where to install the datapack. If Minecraft was installed with Flatpak
 # then the Minecraft directory we want to install to will be in
@@ -22,21 +22,21 @@ endif
 datapacks_directory := $(minecraft_directory)/datapacks
 
 .PHONY: all
-all: $(package_filename)
+all: $(package)
 
 .PHONY: install
-install: $(package_filename) $(datapacks_directory)
-	cp $(package_filename) $(datapacks_directory)
+install: $(package) $(datapacks_directory)
+	cp $(package) $(datapacks_directory)
 
 .PHONY: uninstall
 uninstall:
-	rm $(datapacks_directory)/$(package_filename)
+	rm $(datapacks_directory)/$(package)
 
 .PHONY: clean
 clean:
-	rm $(package_filename)
+	rm $(package)
 
-$(package_filename): $(datapack_files)
+$(package): $(datapack_files)
 	cd src && zip -r ../$@ *
 
 $(datapacks_directory):
