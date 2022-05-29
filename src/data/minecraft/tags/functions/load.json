@@ -1,0 +1,4 @@
+{
+  "replace": false,
+  "values": ["your_datapack_namespace:load"]
+}

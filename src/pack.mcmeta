@@ -1,0 +1,9 @@
+{
+  "pack": {
+    "pack_format": 9,
+    "description": [
+      {"text":"Your Data Pack Name Here","color":"gold"},
+      {"text":"\nyou can put another line of text here","color":"yellow"}
+    ]
+  }
+}
