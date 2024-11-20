@@ -6,23 +6,15 @@ install your datapack.
 
 ## Prerequisites
 
-You will need to install these programs to use the scripts with this template:
-
-- `find`
-- `git`
-- `make`
-- `jq`
-- `sed`
-- `zip`
-
-Most Linux systems come with `find` and `sed` pre-installed.
+You will need Nix to use this template. You can install it using the
+[Determinate Systems Nix Installer](https://zero-to-nix.com/concepts/nix-installer).
 
 ## Getting Started
 
 1. Clone this repository.
 2. Rename the directory `src/data/your_datapack_namespace` to a name of your
    choice.
-3. Edit all of the files in `src/data/minecraft/tags/functions/` to change
+3. Edit all of the files in `src/data/minecraft/tags/function/` to change
    `your_datapack_namespace` to the exact name you picked for the directory in
    step 2.
 3. Modify `src/pack.mcmeta` and change the `"description"` property to set the
@@ -36,7 +28,7 @@ blocks when they explode. You probably want to replace the example code with
 your own.
 
 There are three functions provided in the
-`src/data/your_datapack_namespace/functions/` directory. Each `.mcfunction` file
+`src/data/your_datapack_namespace/function/` directory. Each `.mcfunction` file
 defines a function.
 
 - `load.mcfunction` runs when the datapack is installed - use this function for
@@ -79,11 +71,23 @@ schedule clear your_datapack_namespace:do_something_every_second
 
 ## Building the Datapack
 
+Either start the develop shell by running,
+
+    $ nix develop
+
+or set up [direnv](https://direnv.net/)
+
 To package your datapack into a zip file run,
 
     $ make
 
 ## Installing
+
+Either start the develop shell by running,
+
+    $ nix develop
+
+or set up [direnv](https://direnv.net/)
 
 To install the datapack to your local Minecraft install run,
 
@@ -92,14 +96,21 @@ To install the datapack to your local Minecraft install run,
 This will automatically build the datapack package if there have been changes to
 source files since the package was last built.
 
-The install script attempts to find your Minecraft directory automatically. It
-will install to the first directory it finds in this order:
+The install script will search for saved Minecraft worlds on your computer, and
+prompt which one to install to. If you want to skip the prompt you can write the
+path to a Minecraft world to a file named `selected_world`.
 
-- ~/.var/app/com.mojang.Minecraft/data/minecraft
-- ~/.minecraft
+Every time you install changes to the pack you need to run the command `/reload`
+in your Minecraft world, or restart the game.
 
-If the script picks the wrong directory, or if it does not find your minecraft
-directory, you can override the directory path with an environment variable like
-this:
+## Uninstalling
 
-    $ minecraft_directory=~/my/minecraft/directory make install
+Either start the develop shell by running,
+
+    $ nix develop
+
+or set up [direnv](https://direnv.net/)
+
+To uninstall the datapack run,
+
+    $ make uninstall

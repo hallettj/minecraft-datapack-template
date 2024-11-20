@@ -3,41 +3,24 @@ datapack_files := $(shell find src/)
 datapack_name := $(shell jq -r '.pack.description[0]?.text // .pack.description' src/pack.mcmeta)
 package := $(shell echo '$(datapack_name).zip' | sed 's/[A-Z]/\L&/g; s/\s\+/-/g')
 
-# Check where to install the datapack. If Minecraft was installed with Flatpak
-# then the Minecraft directory we want to install to will be in
-# ~/.var/app/com.mojang.Minecraft/data/minecraft. Otherwise the target directory
-# will usually be ~/.minecraft.
-ifndef minecraft_directory
-ifneq ($(wildcard ~/.var/app/com.mojang.Minecraft/data/minecraft/*),)
-minecraft_directory := ~/.var/app/com.mojang.Minecraft/data/minecraft
-else ifneq ($(wildcard ~/.minecraft/*),)
-minecraft_directory := ~/.minecraft
-endif
-endif
-
-ifndef minecraft_directory
-$(error Could not find a minecraft directory in either ~/.var/app/com.mojang.Minecraft/data/minecraft or ~/.minecraft)
-endif
-
-datapacks_directory := $(minecraft_directory)/datapacks
-
 .PHONY: all
 all: $(package)
 
 .PHONY: install
-install: $(package) $(datapacks_directory)
-	cp $(package) $(datapacks_directory)
+install: $(package) selected_world
+	mkdir -p "$$(<selected_world)/datapacks"
+	cp $(package) "$$(<selected_world)/datapacks"
 
 .PHONY: uninstall
 uninstall:
-	rm $(datapacks_directory)/$(package)
+	rm "$$(<selected_world)/datapacks/$(package)"
 
 .PHONY: clean
 clean:
 	rm $(package)
 
+selected_world:
+	nix run .#select_world
+
 $(package): $(datapack_files)
 	cd src && zip -r ../$@ *
-
-$(datapacks_directory):
-	mkdir -p $(datapacks_directory)
